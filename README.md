@@ -4,6 +4,6 @@ Sitio público de GD en Tandil, con portfolio de diez casas y mapa de 54 ubicaci
 
 ## Publicación
 
-GitHub Actions extrae `website.zip` y `hero-images.zip` en `_site/` y publica ese contenido en GitHub Pages. Ambos paquetes conservan las rutas originales del sitio. Se separan para respetar el límite de carga por archivo del navegador.
+GitHub Actions verifica `checksums.txt`, extrae los paquetes `site-part-*.zip` en `_site/` y publica el contenido en GitHub Pages. Los ocho paquetes conservan las rutas originales y se separan para respetar los límites de carga del navegador.
 
-Para actualizar, reemplazar los paquetes con la nueva versión y guardar los cambios en `main`. El workflow verifica las sumas SHA-256 declaradas antes de publicar; actualizar también esas sumas al reemplazar los paquetes.
+Para actualizar, reemplazar los paquetes correspondientes y sus sumas SHA-256 en `checksums.txt`, y guardar los cambios en `main`. Para editar localmente, extraer todos los paquetes en una misma carpeta y abrirla con un servidor HTTP estático.
