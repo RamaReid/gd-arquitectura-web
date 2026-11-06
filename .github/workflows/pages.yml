@@ -1,0 +1,39 @@
+name: Publicar GD en GitHub Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Obtener archivos
+        uses: actions/checkout@v6
+      - name: Verificar paquetes
+        run: |
+          sha256sum -c checksums.txt
+      - name: Preparar sitio
+        run: |
+          mkdir -p _site
+          for part in site-part-*.zip; do unzip -q "$part" -d _site; done
+          test -f _site/index.html
+          test -f _site/map.js
+      - name: Configurar Pages
+        uses: actions/configure-pages@v5
+      - name: Preparar publicación
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: _site
+      - name: Publicar
+        id: deployment
+        uses: actions/deploy-pages@v4
